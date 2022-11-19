@@ -29,13 +29,18 @@ def get_content(url):
   df = pd.DataFrame({'Product Name': products,'Prices':prices,'Ratings':ratings})
   return df
 
-# parse all pages for category apple
-# first page
-dfs = products.get_content("https://www.flipkart.com/mobiles-accessories/mobiles/pr?sid=tyy%2C4io&q=apple&otracker=categorytree")
-# pages 2 to 11
-for i in range(2, 12):
-  df=products.get_content("https://www.flipkart.com/mobiles-accessories/mobiles/pr?sid=tyy%2C4io&q=apple&otracker=categorytree&page="+str(i))
-  dfs=pd.concat([dfs, df])
+def parse_apple():
+  # parse all pages for category apple
+  # first page
+  dfs = get_content("https://www.flipkart.com/mobiles-accessories/mobiles/pr?sid=tyy%2C4io&q=apple&otracker=categorytree")
+  # pages 2 to 11
+  for i in range(2, 12):
+    df=get_content("https://www.flipkart.com/mobiles-accessories/mobiles/pr?sid=tyy%2C4io&q=apple&otracker=categorytree&page="+str(i))
+    dfs=pd.concat([dfs, df])
 
-# print cheapest phone per product name
-print(dfs.groupby("Product Name").min())
+  # print cheapest phone per product name
+  print(dfs.groupby("Product Name").min())
+
+  return dfs
+
+parse_apple()
